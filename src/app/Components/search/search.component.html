@@ -1,0 +1,89 @@
+<img class="circleanim" *ngIf="!loaded" src="/assets/loading2.png">
+<div class="loading" *ngIf="!loaded">Loading..</div>
+
+<div class="searchOptions">
+    <div class="select" *ngIf="loaded">
+        <p>Page Size:</p>
+        <select  (change)="change()" [(ngModel)]="inputPageSize">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+        </select>
+    </div>
+        <form class="advanced appear" *ngIf="loaded && advancedShown" (submit)="change()">
+            <div class="form-group">
+                <label for="category">Category: </label>
+                <select name="category" id="category" [(ngModel)]="categoryId" (change)="change()">
+                    <option value="">None</option>
+                    <option value="1">Laptops</option>
+                    <option value="2">Phones</option>
+                </select>
+            </div>
+            <div class="form-group" *ngIf="brandsLoaded">
+                <label for="brands">Brands: </label>
+                <select name="brands" id="brands" [(ngModel)]="brand" (change)="change()">
+                    <option value="">None</option>
+                    <option *ngFor="let brand of brands; index as i" value="{{brand}}">{{brand[0].toUpperCase() + brand.slice(1)}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="price_min">Minimum Price: </label>
+                <input type="number" name="price_min" id="price_min" min="1" [(ngModel)]="price_min">
+            </div>
+            <div class="form-group">
+                <label for="price_max">Maximum Price: </label>
+                <input type="number" name="price_max" id="price_max" min="1" [(ngModel)]="price_max">
+            </div>
+            <div class="form-group">
+                <label for="sort_by">Sort By: </label>
+                <select name="sort_by" id="sort_by" [(ngModel)]="sort_by" (change)="change()">
+                    <option value="rating">Rating</option>
+                    <option value="price">Price</option>
+                    <option value="issue_date">Issue Date</option>
+                    <option value="title">Title</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sort_direction">Sort Direction: </label>
+                <select name="sort_direction" id="sort_direction" [(ngModel)]="sort_direction" (change)="change()">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button (click)="resetOptions()" [disabled]="resetDisabled" (mouseover)="resetDisabled = false" (mouseleave)="resetDisabled = true">Reset</button>
+        </form>
+        <div class="toggle" (click)="toggleAdvanced()" *ngIf="loaded">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+</div>
+
+<div *ngIf="loaded" [ngClass]="productsPage.products.length == 0 ? '' : 'cards'">
+    <h1 style="text-align: center; min-height: 50vh;" *ngIf="productsPage.products.length == 0">No results were found.</h1>
+    <div class="card" *ngFor="let product of productsPage.products; index as i">
+        <img src="{{product.thumbnail}}">
+        <div class="card-body">
+            <h3>{{product.title}}</h3>
+            <p>Price: ${{product.price.current}}</p>
+            <a routerLink="/products/details/{{product._id}}">See Details</a>
+        </div>
+    </div>
+</div>
+
+<div class="pages" *ngIf="loaded && pages.length > 1">
+    <div class="pageButtons">
+        <ng-template ngFor let-page [ngForOf]="pages">
+            <a routerLink="/search/" [queryParams]="{page: page}" [queryParamsHandling]="'merge'" *ngIf="!(page > 9)">{{page}}</a>
+        </ng-template>
+        <p *ngIf="pages.length > 9">...</p>
+        <a routerLink="/search/" [queryParams]="{page: pages.reverse()[0]}" [queryParamsHandling]="'merge'" *ngIf="pages.length > 9">{{pages[0]}}</a>
+    </div>
+    <div class="pageSearch">
+        <form (submit)="navigate()">
+            <input type="number" name="pageNumber" [(ngModel)]="inputPageNumber">
+            <button type="submit"></button>
+        </form>
+    </div>
+</div>

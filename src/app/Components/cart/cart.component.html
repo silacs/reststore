@@ -1,0 +1,23 @@
+<h1 *ngIf="loaded && (!cartExists || basket.products.length == 0)">You don't have any items in your cart.</h1>
+<div class="cart" *ngIf="cartExists && loaded && basket.products.length != 0">
+    <h1>Your Cart:</h1>
+    <div class="products">
+        <div class="product" *ngFor="let product of cartProducts; index as i">
+            <div class="prod-wrapper">
+                <img src="{{product.thumbnail}}">
+                <div class="card-body">
+                    <h2>{{product.title}}</h2>
+                    <p>{{product.description}}</p>
+                    <p id="quantity">Quantity: <button (click)="changeQuantity(product._id, i, 'remove')">-</button> {{basket.products[i].quantity}} 
+                        <button (click)="changeQuantity(product._id, i, 'add')">+</button></p>
+                    <h3>Price: ${{product.price.current}}</h3>
+                </div>
+            </div>
+            <button (click)="deleteItem(i)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+    <div class="checkout">
+        <h3>Total Price: ${{basket.total.price.current}}</h3>
+        <button (click)="checkout()">Checkout</button>
+    </div>
+</div>

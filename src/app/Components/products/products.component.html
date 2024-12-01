@@ -1,0 +1,36 @@
+<img class="circleanim" *ngIf="!loaded" src="/assets/loading2.png">
+<div class="loading" *ngIf="!loaded">Loading..</div>
+<div class="select" *ngIf="loaded">
+    Page Size: <select  (change)="change()" [(ngModel)]="inputPageSize">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+            </select>
+</div>
+
+<div class="cards" *ngIf="loaded">
+    <div class="card" *ngFor="let product of productsPage.products; index as i">
+        <img src="{{product.thumbnail}}">
+        <div class="card-body">
+            <h3>{{product.title}}</h3>
+            <p>Price: ${{product.price.current}}</p>
+            <a routerLink="/products/details/{{product._id}}">See Details</a>
+        </div>
+    </div>
+</div>
+
+<div class="pages" *ngIf="loaded">
+    <div class="pageButtons">
+        <ng-template ngFor let-page [ngForOf]="pages">
+            <a routerLink="/products/page/{{page}}" *ngIf="!(page > 9)">{{page}}</a>
+        </ng-template>
+        <p *ngIf="pages.length > 9">...</p>
+        <a routerLink="/products/page/{{pages.reverse()[0]}}" *ngIf="pages.length > 9">{{pages[0]}}</a>
+    </div>
+    <div class="pageSearch">
+        <form (submit)="navigate()">
+            <input type="number" name="pageNumber" [(ngModel)]="inputPageNumber">
+            <button type="submit"></button>
+        </form>
+    </div>
+</div>

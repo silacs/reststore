@@ -1,0 +1,34 @@
+<img class="circleanim" *ngIf="!loaded" src="/assets/loading2.png">
+<div class="loading" *ngIf="!loaded">Loading..</div>
+<div class="select" *ngIf="loaded">
+    Page Size: <select  (change)="change()" [(ngModel)]="inputPageSize">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+            </select>
+</div>
+
+<div class="cards" *ngIf="loaded">
+    <div class="card" *ngFor="let user of userPage.users; index as i">
+        <img src="{{user.avatar}}">
+        <h2>{{user.firstName}} {{user.lastName}}</h2>
+        <p>{{user.email}}</p>
+        <a routerLink="/users/{{user._id}}">See Details</a>
+    </div>
+</div>
+
+<div class="pages" *ngIf="loaded">
+    <div class="pageButtons">
+        <ng-template ngFor let-page [ngForOf]="pages">
+            <a routerLink="/users/page/{{page}}" *ngIf="!(page > 9)">{{page}}</a>
+        </ng-template>
+        <p *ngIf="pages.length > 9">...</p>
+        <a routerLink="/users/page/{{pages.reverse()[0]}}" *ngIf="pages.length > 9">{{pages[0]}}</a>
+    </div>
+    <div class="pageSearch">
+        <form (submit)="navigate()">
+            <input type="number" name="pageNumber" [(ngModel)]="inputPageNumber">
+            <button type="submit"></button>
+        </form>
+    </div>
+</div>
