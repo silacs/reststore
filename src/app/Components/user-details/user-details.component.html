@@ -1,0 +1,12 @@
+<div class="card" *ngIf="loaded">
+    <img src="{{user.avatar}}">
+    <div class="card-body">
+        <h2>{{user.firstName}} {{user.lastName}}</h2>
+        <p>Email: {{user.email}}</p>
+        <p>Phone: {{user.phone}}</p>
+        <p>Age: {{user.age}}</p>
+        <p>Gender: {{user.gender[0] + user.gender.slice(1).toLowerCase()}}</p>
+        <p>Address: {{user.address}}</p>
+        <p>Zipcode: {{user.zipcode}}</p>
+    </div>
+</div>

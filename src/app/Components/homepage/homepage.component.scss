@@ -1,0 +1,10 @@
+:host {
+    > h1 {
+        text-align: center;
+        span {
+            background: var(--main-gradient);
+            background-clip: text;
+            color: transparent;
+        }
+    }
+}

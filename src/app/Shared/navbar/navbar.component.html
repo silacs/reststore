@@ -1,0 +1,123 @@
+
+<div class="left">
+    <a routerLink="/">
+        Everrest Store
+    </a>
+    <div class="bmenu" (click)="toggleburger()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+</div>
+<form class="search" (submit)="search(keywords)">
+    <input type="search" name="q" placeholder="Search" [(ngModel)]="keywords">
+    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+</form>
+<div class="right">
+    <nav>
+        <ul>
+            <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Homepage</a></li>
+            <li><a routerLink="/products/page/1" routerLinkActive="active">Products</a></li>
+            <li [hidden]="!loggedin"><a routerLink="/users/page/1" routerLinkActive="active" *ngIf="loggedin">Users</a></li>
+            <li [hidden]="!loggedin"><a routerLink="/cart" routerLinkActive="active" *ngIf="loggedin">Cart</a></li>
+            <li *ngIf="!loggedin">
+                <div class="auth">
+                <a routerLink="/signup" id="signup" routerLinkActive="activeauth">Sign Up</a>
+                <a routerLink="/signin" id="signin" routerLinkActive="activeauth">Sign In</a>
+                </div>
+            </li>
+            <li *ngIf="loggedin" id="user" (click)="toggleUser()">
+                <img src="{{user.avatar}}" alt="">
+                <nav *ngIf="showMenu" class="appear">
+                    <ul>
+                        <li><a routerLink="/account">Account Settings</a></li>
+                        <li><a (click)="signOut()">Sign Out</a></li>
+                    </ul>
+                </nav>
+            </li>
+            <li *ngIf="loggedin && hasCart" id="cart" (click)="toggleCart()">
+                <span class="fa-solid fa-cart-shopping"></span>
+                <div *ngIf="showCart" class="appear cart">
+                    <header>
+                        <h3>Your Cart:</h3>
+                        <i class="fa-solid fa-xmark" (click)="closeCart()"></i>
+                    </header>
+                    <div class="cartItems"> 
+                        <img src="/assets/loading2.png" *ngIf="!cartLoaded" class="circleanim">
+                        <p class="loading" *ngIf="!cartLoaded">Loading...</p>
+                        <p *ngIf="cartProducts.length == 0 && cartLoaded">You don't have any items in your cart</p>
+                        <div class="card" *ngFor="let product of cartProducts; index as i">
+                            <img src="{{product.thumbnail}}">
+                            <div class="card-body">
+                                <p>{{product.title.length > 15 ? product.title.slice(0, 15) + '...' : product.title}}</p>
+                                <p>Quantity: <button (click)="changeQuantity(product._id, i, 'remove')">-</button> {{basket.products[i].quantity}} 
+                                            <button (click)="changeQuantity(product._id, i, 'add')">+</button></p>
+                            </div>
+                            <button (click)="deleteItem(product._id)">X</button>
+                        </div>
+                    </div>
+                    <footer>
+                        <h3 *ngIf="cartLoaded">Total Price: ${{roundPrice()}}</h3>
+                        <button (click)="checkout()">Checkout</button>
+                    </footer>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+<nav class="mobile appear" *ngIf="bMenuShown">
+    <ul>
+        <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="bMenuShown = false">Homepage</a></li>
+        <li><a routerLink="/products/page/1" routerLinkActive="active" (click)="bMenuShown = false">Products</a></li>
+        <li [hidden]="!loggedin"><a routerLink="/users/page/1" routerLinkActive="active" *ngIf="loggedin" (click)="bMenuShown = false">Users</a></li>
+        <li [hidden]="!loggedin"><a routerLink="/cart" routerLinkActive="active" *ngIf="loggedin" (click)="bMenuShown = false">Cart</a></li>
+        <li *ngIf="!loggedin">
+            <div class="auth">
+            <a routerLink="/signup" id="signup" routerLinkActive="activeauth" (click)="bMenuShown = false">Sign Up</a>
+            <a routerLink="/signin" id="signin" routerLinkActive="activeauth" (click)="bMenuShown = false">Sign In</a>
+            </div>
+        </li>
+        <li *ngIf="loggedin" id="user" (click)="toggleUser()">
+            <img src="{{user.avatar}}" alt="">
+            <nav *ngIf="showMenu" class="appear">
+                <ul>
+                    <li><a routerLink="/account">Account Settings</a></li>
+                    <li><a (click)="signOut()">Sign Out</a></li>
+                </ul>
+            </nav>
+        </li>
+        <li *ngIf="loggedin && hasCart" id="cart" (click)="toggleCart()">
+            <span class="fa-solid fa-cart-shopping"></span>
+            <div *ngIf="showCart" class="appear cart">
+                <header>
+                    <h3>Your Cart:</h3>
+                    <i class="fa-solid fa-xmark" (click)="closeCart()"></i>
+                </header>
+                <div class="cartItems"> 
+                    <img src="/assets/loading2.png" *ngIf="!cartLoaded" class="circleanim">
+                    <p class="loading" *ngIf="!cartLoaded">Loading...</p>
+                    <p *ngIf="cartProducts.length == 0 && cartLoaded">You don't have any items in your cart</p>
+                    <div class="card" *ngFor="let product of cartProducts; index as i">
+                        <img src="{{product.thumbnail}}">
+                        <div class="card-body">
+                            <p>{{product.title.length > 15 ? product.title.slice(0, 15) + '...' : product.title}}</p>
+                            <p>Quantity: <button (click)="changeQuantity(product._id, i, 'remove')">-</button> {{basket.products[i].quantity}} 
+                                        <button (click)="changeQuantity(product._id, i, 'add')">+</button></p>
+                        </div>
+                        <button (click)="deleteItem(product._id)">X</button>
+                    </div>
+                </div>
+                <footer>
+                    <h3 *ngIf="cartLoaded">Total Price: ${{basket.total.price.current}}</h3>
+                    <button (click)="checkout()">Checkout</button>
+                </footer>
+            </div>
+        </li>
+        <li id="searchLi">
+            <form class="mobileSearch" (submit)="search(keywords); bMenuShown = false">
+                <input type="search" name="q" placeholder="Search" [(ngModel)]="keywords">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </li>
+    </ul>
+</nav>

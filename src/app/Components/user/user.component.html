@@ -1,0 +1,69 @@
+<div class="left">
+    <h1>Account Information</h1>
+    <div class="errors" *ngIf="infoerrors.length > 0">
+        <p *ngFor="let error of infoerrors">{{error}}</p>
+    </div>
+    <form (submit)="submit()" #userUpdate="ngForm">
+        <div class="form-group">
+            <label for="firstName">Name: </label>
+            <input type="text" name="firstName" id="firstName" [(ngModel)]="user.firstName" required  minlength="2" maxlength="10">
+        </div>
+        <div class="form-group">
+            <label for="lastName">Surname: </label>
+            <input type="text" name="lastName" id="lastName" [(ngModel)]="user.lastName" required  minlength="2" maxlength="10">
+        </div>
+        <div class="form-group">
+            <label for="age">Age: </label>
+            <input type="number" name="age" id="age" [(ngModel)]="user.age" required min="13" max="110">
+        </div>
+        <div class="form-group">
+            <label for="email">Email: </label>
+            <input type="email" name="email" id="email" [defaultValue]="user.email" disabled>
+        </div>
+        <div class="form-group">
+            <label for="address">Address: </label>
+            <input type="text" name="address" id="address" [(ngModel)]="user.address" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone: </label>
+            <input type="tel" name="phone" id="phone" [(ngModel)]="user.phone" required>
+        </div>
+        <div class="form-group">
+            <label for="zipcode">Zipcode: </label>
+            <input type="text" name="zipcode" id="zipcode" [(ngModel)]="user.zipcode" required>
+        </div>
+        <div class="form-group">
+            <label for="avatar">Avatar: </label>
+            <input type="text" name="avatar" id="avatar" [(ngModel)]="user.avatar" required>
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender: </label>
+            <select name="gender" id="gender" [(ngModel)]="user.gender" required>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+            </select>
+        </div>
+        <p>Your ID: {{user._id}}</p>
+        <button type="submit" [disabled]="userUpdate.invalid">Submit</button>
+    </form>
+</div>
+<div class="right">
+    <h1>Change Password</h1>
+    <div class="errors" *ngIf="passerrors.length > 0">
+        <p *ngFor="let error of passerrors; index as i">
+            {{error}}
+        </p>
+    </div>
+    <form (submit)="changePass()" id="changePass" #passForm="ngForm">
+        <div class="form-group">
+            <label for="oldpass">Old Password: </label>
+            <input type="text" name="oldpass" id="oldpass" [(ngModel)]="passwordReset.oldPassword" required  minlength="2" maxlength="20">
+        </div>
+        <div class="form-group">
+            <label for="newpass">New Password: </label>
+            <input type="text" name="newpass" id="newpass" [(ngModel)]="passwordReset.newPassword" required  minlength="2" maxlength="20">
+        </div>
+        <button type="submit" [disabled]="passForm.invalid">Submit</button>
+    </form>
+    <p (click)="deleteAccount()">Delete Account</p>
+</div>

@@ -1,0 +1,13 @@
+<form #signin="ngForm" (ngSubmit)="submit()">
+    <h1>{{error}} <a *ngIf="error == 'Your email is not verified.'" routerLink="/verify">Click here to verify</a></h1>
+    <div class="form-group">    
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required [(ngModel)]="user.email">
+    </div>
+    <div class="form-group">    
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required [(ngModel)]="user.password">
+    </div>
+    <a routerLink="/recovery">Forgot Passsword?</a>
+    <button type="submit">Sign In</button>
+</form>

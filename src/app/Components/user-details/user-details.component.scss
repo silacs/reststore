@@ -1,0 +1,25 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .card {
+        font-size: clamp(14px, 1.5vw, 26px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border: solid 1px black;
+        padding: 10px 30px;
+        border-radius: 10px;
+        @media screen and (max-width: 650px) {
+            width: 95%;
+        }
+        img {
+            border-radius: 50%;
+            border: solid 1px black;
+            max-width: 40%;
+            min-width: 40px;
+            min-height: 40px;
+        }
+    }
+}

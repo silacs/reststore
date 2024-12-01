@@ -1,0 +1,122 @@
+:host {
+    > h1 {
+        text-align: center;
+        margin: 0 30px;
+    }
+    .cart {
+        width: 80%;
+        margin: 0 auto;
+        border: solid 1px black;
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        > h1 {
+            @media screen and (max-width: 250px) {
+                font-size: 26px;
+            }
+        }
+        .products {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            .product, .prod-wrapper {
+                display: flex;
+                border: solid 1px black;
+                border-radius: 10px;
+                .prod-wrapper {
+                    border: none;
+                    width: 95%;
+                    img {
+                        width: clamp(100px, 15%, 15%);
+                        border-radius: inherit;
+                        margin-right: 10px;
+                        object-fit: contain;
+                        aspect-ratio: 1/1;
+                    }
+                    .card-body {
+                        width: 80%;
+                        padding: 5px;
+                        p#quantity {
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                            button {
+                                flex: 0;
+                                background-color: transparent;
+                                border: none;
+                                cursor: pointer;
+                                &:hover {
+                                    font-size: clamp(20px, 1.5vw, 40px);
+                                }
+                            }
+                        }
+                    }
+                    @media screen and (max-width: 600px) {
+                        width: 85%;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        h2 {
+                            word-wrap: break-word;
+                        }
+                    }
+                    @media screen and (max-width: 400px) {
+                        font-size: 14px;
+                        h2 {
+                            font-size: 20px;
+                        }
+                        img {
+                            margin-right: 0;
+
+                        }
+                    }
+                }
+                button {
+                    flex: 1;
+                    border-radius: 0 10px 10px 0;
+                    border: none;
+                    border-left: solid 1px black;
+                    font-size: clamp(20px, 1.5vw, 40px);
+                    transition: 0.2s;
+                    &:hover {
+                        font-size: clamp(25px, 1.8vw, 45px);
+                    }
+                }
+                @media screen and (max-width: 400px) {
+                    flex-direction: column;
+                    button {
+                        border-top: solid 1px black;
+                        border-left: none;
+                        border-radius: 0 0 10px 10px;
+                    }
+                    .prod-wrapper {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        .checkout {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            button {
+                border: solid 1px black;
+                border-radius: 10px;
+                background: var(--main-gradient);
+                color: white;
+                padding: 10px 20px;
+                font-size: 16px;
+                transition: 0.2s;
+                &:hover {
+                    font-size: 18px;
+                }
+            }
+            @media screen and (max-width: 300px) {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    }
+}

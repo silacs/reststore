@@ -1,0 +1,57 @@
+<img src="/assets/loading2.png" alt="" *ngIf="!loaded" class="circleanim">
+<p *ngIf="!loaded" class="loading">Loading...</p>
+<button *ngIf="loaded" onclick="history.back()"><i class="fa-solid fa-chevron-left"></i></button>
+<div class="product" *ngIf="loaded">
+    <div class="images">
+        <div class="imageButtons" *ngIf="product.images.length > 0">
+            <img *ngFor="let image of product.images; index as i" src="{{image}}" (click)="imageLoader(i)">
+        </div>
+        <img src="{{product.images.length > 0 ? product.images[imageIndex] : product.thumbnail}}">
+    </div>
+    <div class="product-body">
+        <div class="productDesc">         
+            <header>
+                <p>Release Date: {{getDate(product.issueDate)}}</p>
+                <p id="h3">Brand: {{product.brand[0].toUpperCase() + product.brand.slice(1)}}</p>
+                <p id="h2">{{product.title}}</p>
+                <p>Category: {{product.category.name}}</p>
+            </header>
+            <p>Description: {{product.description}}</p>
+            <div class="ratings">
+                <p>Rating: {{product.rating}}</p>
+                <div class="stars">
+                    <i class="fa-star"  [ngClass]="[
+                        product.rating >= 1 ? 'fa-solid' : 'fa-regular'
+                    ]"></i>
+                    <i class="fa-star"  [ngClass]="[
+                        product.rating >= 2 ? 'fa-solid' : 'fa-regular'
+                    ]"></i>
+                    <i class="fa-star"  [ngClass]="[
+                        product.rating >= 3 ? 'fa-solid' : 'fa-regular'
+                    ]"></i>
+                    <i class="fa-star"  [ngClass]="[
+                        product.rating >= 4 ? 'fa-solid' : 'fa-regular'
+                    ]"></i>
+                    <i class="fa-star"  [ngClass]="[
+                        product.rating >= 5 ? 'fa-solid' : 'fa-regular'
+                    ]"></i>
+                </div>
+                <p>({{product.ratings.length}} Review{{product.ratings.length > 1 ? 's' : ''}})</p>
+            </div>
+            <div class="prices">
+                <p class="price old" *ngIf="product.price.discountPercentage > 0">Old price: ${{product.price.beforeDiscount}}</p>
+                <p class="price discount" *ngIf="product.price.discountPercentage > 0">Discount: {{product.price.discountPercentage}}%</p>
+                <p class="price"><span *ngIf="product.price.discountPercentage > 0">New </span>Price: ${{product.price.current}}</p>
+            </div>
+            <button (click)="auth.userloginCheck() ? (cartExists ? addItem(product._id) : createCart(product._id)) : router.navigate(['/signin'])">Add to cart</button>
+        </div>
+        <div class="rate" >
+            <p>Rate: </p>
+            <input class="fa-regular fa-star" type="checkbox" name="1" id="1" (click)="getCheckedStars(0); rateProduct(1)">
+            <input class="fa-regular fa-star" type="checkbox" name="2" id="2" (click)="getCheckedStars(1); rateProduct(2)">
+            <input class="fa-regular fa-star" type="checkbox" name="3" id="3" (click)="getCheckedStars(2); rateProduct(3)">
+            <input class="fa-regular fa-star" type="checkbox" name="4" id="4" (click)="getCheckedStars(3); rateProduct(4)">
+            <input class="fa-regular fa-star" type="checkbox" name="5" id="5" (click)="getCheckedStars(4); rateProduct(5)">
+        </div>
+    </div>
+</div>
